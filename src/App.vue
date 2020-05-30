@@ -1,32 +1,38 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <v-app>
+    <v-app-bar app color="primary" dark>
+      <div class="d-flex align-center" @click="$router.push('/')">
+        <v-icon>mdi-heart-outline</v-icon>
+        <span class="mr-2 headline">طبيبي</span>
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn @click="$router.push({ name: 'Consultations' })" class="accent">
+        <span class="ml-2">استشارات</span>
+        <v-icon small>mdi-chat</v-icon>
+      </v-btn>
+      <v-btn @click="loginDialog = true" class="accent mr-1">
+        <span>تسجيل دخول</span>
+      </v-btn>
+    </v-app-bar>
+
+    <v-content>
+      <router-view />
+    </v-content>
+    <login :dialog="loginDialog"></login>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import Login from "./components/Auth/Login";
+export default {
+  name: "App",
 
-#nav {
-  padding: 30px;
+  components: { Login },
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+  data: () => ({
+    loginDialog: false
+  })
+};
+</script>
