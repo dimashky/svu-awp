@@ -10,7 +10,8 @@ class ConsultationsAPI {
   }
 
   static async update(id, request) {
-    return (await $http.put("/api/consultations/" + id, request)).data;
+    return (await $http.put("/api/consultations/" + id + "?answer=" + request))
+      .data;
   }
 
   static async delete(id) {

@@ -7,12 +7,16 @@ import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
 import Snotify, { SnotifyPosition } from "vue-snotify";
 import "vue-snotify/styles/material.css";
+import moment from "moment";
 
 Vue.use(Snotify, {
   toast: {
     position: SnotifyPosition.leftBottom
   }
 });
+
+moment.locale("ar");
+Vue.prototype.$moment = moment;
 
 Vue.prototype.$url = url => {
   if (!url) return "";

@@ -4,12 +4,16 @@
       :headers="headers"
       :items="items"
       :loading="loading"
-      :sort-by="['AnswerAt', 'CreatedAt']"
-      :sort-desc="[true, true]"
       multi-sort
       :items-per-page="20"
       class="elevation-1"
     >
+      <template v-slot:item.answeredAt="{ item }">
+        {{ item.answeredAt ? $moment(item.answeredAt).format("L") : "" }}
+      </template>
+      <template v-slot:item.createdAt="{ item }">
+        {{ $moment(item.createdAt).format("L") }}
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-btn
           v-if="isAdmin"
@@ -41,12 +45,11 @@ export default {
       loading: false,
       items: [],
       headers: [
-        { text: "#", value: "Id" },
-        { text: "السؤال", value: "question" },
-        { text: "الرد", value: "answer" },
-        { text: "المستخدم", value: "user_id" },
-        { text: "تاريخ السؤال", value: "createdAt" },
-        { text: "تاريخ الاجابة", value: "answerAt" },
+        { text: "#", value: "id", sortable: false },
+        { text: "السؤال", value: "question", sortable: false },
+        { text: "الرد", value: "answer", sortable: false },
+        { text: "تاريخ السؤال", value: "createdAt", sortable: false },
+        { text: "تاريخ الاجابة", value: "answeredAt", sortable: false },
         { text: "الاجراءات", value: "actions", sortable: false }
       ]
     };

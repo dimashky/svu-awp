@@ -44,7 +44,6 @@ export default {
     openEditDialog(item) {
       this.dialog = true;
       this.itemId = item.id;
-      console.log(item);
       this.$refs.form.setForm(item.question, item.answer);
     },
     handleClose() {
