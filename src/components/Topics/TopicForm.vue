@@ -22,12 +22,7 @@
                 prepend-icon="mdi-camera"
                 label="صورة الخلفية"
               ></v-file-input>
-              <v-textarea
-                v-model="content"
-                :counter="1000"
-                label="محتوى الموضوع"
-                required
-              ></v-textarea>
+              <VueTrix v-model="content" placeholder="محتوى الموضوع" />
             </v-card-text>
 
             <v-card-actions>
@@ -54,10 +49,14 @@
 
 <script>
 import TopicsAPI from "../../api/TopicsAPI";
+import VueTrix from "vue-trix";
 
 export default {
   name: "TopicForm",
   props: ["dialog", "id"],
+  components: {
+    VueTrix
+  },
   data() {
     return {
       loading: false,

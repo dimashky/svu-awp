@@ -5,6 +5,10 @@ class TopicsAPI {
     return (await $http.get("/api/topics")).data;
   }
 
+  static async show(id) {
+    return (await $http.get("/api/topics/" + id)).data;
+  }
+
   static async create(request) {
     const config = {
       headers: { "Content-Type": "multipart/form-data" }

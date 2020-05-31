@@ -50,6 +50,9 @@
       @close="registerDialog = false"
     ></register>
     <vue-snotify />
+    <vue-recaptcha
+      sitekey="6LdMu_4UAAAAAM1DJI0sunz5V0DNxDWArNA3qo6L"
+    ></vue-recaptcha>
   </v-app>
 </template>
 
@@ -58,11 +61,12 @@ import Login from "./components/Auth/Login";
 import { mapGetters } from "vuex";
 import AuthAPI from "./api/AuthAPI";
 import Register from "./components/Auth/Register";
+import VueRecaptcha from "vue-recaptcha";
 
 export default {
   name: "App",
 
-  components: { Register, Login },
+  components: { Register, Login, VueRecaptcha },
 
   data: () => ({
     loginDialog: false,
