@@ -4,7 +4,7 @@ import "vuetify/dist/vuetify.min.css";
 
 Vue.use(Vuetify);
 
-export default new Vuetify({
+const vuetify = new Vuetify({
   rtl: true,
   theme: {
     themes: {
@@ -20,3 +20,5 @@ export default new Vuetify({
     }
   }
 });
+
+export default vuetify;

@@ -5,12 +5,13 @@
         <v-card>
           <v-card-title class="headline">تسجيل الدخول</v-card-title>
 
-          <v-form ref="form" v-model="valid">
+          <v-form ref="form" v-model="valid" @submit="submit">
             <v-card-text>
               <v-text-field
                 v-model="name"
                 :counter="10"
                 :rules="nameRules"
+                :loading="loading"
                 label="اسم المستخدم"
                 required
               ></v-text-field>
@@ -19,6 +20,7 @@
                 :rules="passwordRules"
                 type="password"
                 label="كلمة السر"
+                :loading="loading"
                 required
               ></v-text-field>
             </v-card-text>
@@ -32,7 +34,8 @@
                 :disabled="!valid"
                 color="primary"
                 class="mr-4"
-                @click="submit"
+                :loading="loading"
+                type="submit"
               >
                 تسجيل دخول
               </v-btn>
@@ -45,12 +48,15 @@
 </template>
 
 <script>
+import AuthAPI from "../../api/AuthAPI";
+
 export default {
   name: "Login",
   props: ["dialog"],
   data() {
     return {
       valid: true,
+      loading: false,
       name: "",
       nameRules: [
         v => !!v || "اسم المستخدم ضروري",
@@ -76,9 +82,21 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation();
     },
-    submit() {
+    submit(e) {
+      e.preventDefault();
       this.$refs.form.validate();
-      // TODO
+      if (!this.valid) return;
+      this.loading = true;
+      AuthAPI.login(this.name, this.password)
+        .then(user => {
+          localStorage.setItem("accessToken", user.token);
+          AuthAPI.setAuthorizationHeader(user.token);
+          this.$store.commit("user", user);
+          this.$emit("close");
+          this.$snotify.success("تم تسجيل الدخول بنجاح");
+        })
+        .catch(err => this.$snotify.error(err.message))
+        .finally(() => (this.loading = false));
     },
     close() {
       this.$refs.form.reset();

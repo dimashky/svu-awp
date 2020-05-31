@@ -9,9 +9,15 @@
         </div>
       </v-row>
       <div class="mt-4">
-        <topics-table></topics-table>
+        <topics-table ref="table" @update="openEditDialog"></topics-table>
       </div>
-      <topic-form :dialog="dialog" @close="dialog = false"></topic-form>
+      <topic-form
+        ref="dialog"
+        :id="itemId"
+        :dialog="dialog"
+        @close="handleClose"
+        @submit="handleSubmit"
+      ></topic-form>
     </v-container>
   </div>
 </template>
@@ -24,8 +30,23 @@ export default {
   components: { TopicForm, TopicsTable },
   data() {
     return {
-      dialog: false
+      dialog: false,
+      itemId: null
     };
+  },
+  methods: {
+    openEditDialog(item) {
+      this.dialog = true;
+      this.itemId = item.id;
+      this.$refs.dialog.setForm(item.title, item.content);
+    },
+    handleClose() {
+      this.dialog = false;
+      this.itemId = null;
+    },
+    handleSubmit() {
+      this.$refs.table.fetch();
+    }
   }
 };
 </script>
