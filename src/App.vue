@@ -78,6 +78,7 @@ export default {
           localStorage.removeItem("accessToken");
           AuthAPI.setAuthorizationHeader("");
           this.$store.commit("user", {});
+          this.$router.push("/");
         })
         .catch(error => {
           this.$snotify.error(error.message);

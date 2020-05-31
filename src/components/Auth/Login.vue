@@ -92,6 +92,7 @@ export default {
           localStorage.setItem("accessToken", user.token);
           AuthAPI.setAuthorizationHeader(user.token);
           this.$store.commit("user", user);
+          this.$refs.form.reset();
           this.$emit("close");
           this.$snotify.success("تم تسجيل الدخول بنجاح");
         })

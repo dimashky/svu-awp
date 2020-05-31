@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isAuthenticated">
     <div>
       <v-dialog v-model="dialog" max-width="500" @click:outside="close">
         <v-card>
@@ -8,6 +8,7 @@
           <v-form ref="form" v-model="valid">
             <v-card-text>
               <v-textarea
+                :disabled="isAdmin"
                 v-model="question"
                 :counter="10000"
                 :rules="questionRules"
@@ -16,6 +17,7 @@
               ></v-textarea>
 
               <v-textarea
+                v-if="isAdmin"
                 v-model="answer"
                 :counter="10000"
                 :rules="answerRules"
@@ -33,6 +35,7 @@
                 color="primary"
                 class="mr-4"
                 @click="submit"
+                :loading="loading"
               >
                 إرسال
               </v-btn>
@@ -45,11 +48,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import ConsultationsAPI from "../../api/ConsultationsAPI";
+
 export default {
   name: "ConsultationForm",
   props: ["dialog", "question", "answer"],
+  computed: {
+    ...mapGetters(["isAuthenticated", "isAdmin"])
+  },
   data() {
     return {
+      loading: false,
       valid: true,
       questionRules: [
         v => !!v || "نص الاستشارة ضرورية",
@@ -70,6 +80,8 @@ export default {
       this.$refs.form.validate();
     },
     reset() {
+      this.question = "";
+      this.answer = "";
       this.$refs.form.reset();
     },
     resetValidation() {
@@ -79,8 +91,31 @@ export default {
       this.reset();
       this.$emit("close");
     },
+    setForm(question, answer) {
+      this.question = question;
+      this.answer = answer;
+    },
     submit() {
-      // TODO
+      const { question, answer } = this;
+      const request = { question, answer };
+      this.loading = true;
+      if (!this.id) {
+        ConsultationsAPI.create(request)
+          .then(() => {
+            this.$refs.form.reset();
+            this.$emit("submit");
+          })
+          .catch(err => this.$snotify.error(err.message))
+          .finally(() => (this.loading = false));
+      } else {
+        ConsultationsAPI.update(this.id, request)
+          .then(() => {
+            this.$refs.form.reset();
+            this.$emit("submit");
+          })
+          .catch(err => this.$snotify.error(err.message))
+          .finally(() => (this.loading = false));
+      }
     }
   }
 };

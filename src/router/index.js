@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Consultations from "../views/Consultations";
 import Topics from "../views/Topics";
+import store from "../store/index";
 
 Vue.use(VueRouter);
 
@@ -15,7 +16,12 @@ const routes = [
   {
     path: "/consultations",
     name: "Consultations",
-    component: Consultations
+    component: Consultations,
+    beforeEnter: (to, from, next) => {
+      const isAuthenticated = store.getters.isAuthenticated;
+      if (!isAuthenticated) next("/");
+      else next();
+    }
   },
   {
     path: "/topics",
