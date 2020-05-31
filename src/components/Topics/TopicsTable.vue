@@ -4,9 +4,12 @@
       :headers="headers"
       :items="items"
       :items-per-page="20"
-      class="elevation-1"
+      class="elevation-5"
       :loading="loading"
     >
+      <template v-slot:item.createdAt="{ item }">
+        {{ $moment(item.createdAt).format("LLL") }}
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">
           mdi-pencil
