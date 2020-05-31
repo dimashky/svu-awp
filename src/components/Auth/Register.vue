@@ -11,15 +11,27 @@
                 v-model="name"
                 :counter="10"
                 :rules="nameRules"
-                label="اسم المستخدم"
+                label="اسم المستخدم *"
                 :loading="loading"
                 required
+              ></v-text-field>
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                label="الايميل"
+                :loading="loading"
+                type="email"
+              ></v-text-field>
+              <v-text-field
+                v-model="phoneNumber"
+                label="رقم الهاتف"
+                :loading="loading"
               ></v-text-field>
               <v-text-field
                 v-model="password"
                 :rules="passwordRules"
                 type="password"
-                label="كلمة السر"
+                label="كلمة السر *"
                 :loading="loading"
                 required
               ></v-text-field>
@@ -56,6 +68,9 @@ export default {
   data() {
     return {
       valid: true,
+      birthDate: "",
+      email: "",
+      phoneNumber: "",
       loading: false,
       name: "",
       nameRules: [
@@ -69,6 +84,9 @@ export default {
         v => !!v || "كلمة السر ضرورية",
         v =>
           (v && v.length >= 3) || "كلمة السر يجب أن يحتوى على 3 محارف او أكثر"
+      ],
+      emailRules: [
+        v => !v || /.+@.+\..+/.test(v) || "يجب أن يكون البريد الالكتروني صالح"
       ]
     };
   },
@@ -87,7 +105,12 @@ export default {
       this.$refs.form.validate();
       if (!this.valid) return;
       this.loading = true;
-      AuthAPI.register(this.username, this.password)
+      AuthAPI.register(
+        this.username,
+        this.password,
+        this.email,
+        this.phoneNumber
+      )
         .then(user => {
           localStorage.setItem("accessToken", user.token);
           AuthAPI.setAuthorizationHeader(user.token);

@@ -1,8 +1,8 @@
 import $http from "./$http";
 
 export default class AuthAPI {
-  static async register(username, password) {
-    const body = { username, password };
+  static async register(username, password, email, phoneNumber) {
+    const body = { username, password, email, phoneNumber };
     return (await $http.post("/api/users/register", body)).data;
   }
 
