@@ -8,6 +8,14 @@
 
       <v-spacer></v-spacer>
 
+      <v-btn
+        @click="$router.push({ name: 'SmartAssist' })"
+        class="ml-1"
+        color="error darken-2"
+      >
+        <span class="ml-1">النظام الخبير</span>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
       <template v-if="isAdmin">
         <v-btn
           @click="$router.push({ name: 'Topics' })"

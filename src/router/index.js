@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Consultations from "../views/Consultations";
 import Topics from "../views/Topics";
 import store from "../store/index";
+import SmartAssist from "../views/SmartAssist";
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,11 @@ const routes = [
     path: "/topics",
     name: "Topics",
     component: Topics
+  },
+  {
+    path: "/smart-assist",
+    name: "SmartAssist",
+    component: SmartAssist
   }
 ];
 
