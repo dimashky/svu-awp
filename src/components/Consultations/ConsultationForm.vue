@@ -17,6 +17,7 @@
               ></v-textarea>
 
               <v-textarea
+                v-if="isAdmin || answer"
                 :readonly="!isAdmin"
                 v-model="answer"
                 :counter="300"
